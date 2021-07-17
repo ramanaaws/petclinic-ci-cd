@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('SCM checkout') {
             steps {
-                git changelog: false, poll: false, url: 'https://github.com/prasad888/spring-framework-petclinic.git'
+                git changelog: false, poll: false, url: 'https://github.com/ramanaaws/petclinic-ci-cd.git'
             }
         }
         
@@ -17,13 +17,13 @@ pipeline {
         stage('Storing war into artifactory') {
             steps {
                 sh 'mv target/petclinic.war target/petclinic-$BUILD_NUMBER.war'
-                sh 'aws s3 cp target/petclinic-$BUILD_NUMBER.war s3://lap.123'
+                sh 'aws s3 cp target/petclinic-$BUILD_NUMBER.war s3://ramana'
             }
         }
         
         stage('Deploy Stage') {
             steps {
-                sh 'scp target/petclinic-$BUILD_NUMBER.war root@10.0.104.250:/opt/tomcat/webapps/petclinic.war'
+                sh 'scp target/petclinic-$BUILD_NUMBER.war root@192.0.10.199:/opt/tomcat/webapps/petclinic.war'
             }
         }
     }
